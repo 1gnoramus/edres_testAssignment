@@ -1,10 +1,11 @@
 import "../styles.scss";
 import mapWebImg from ".././assets/mapWeb.png";
 import pointImg from ".././assets/point2.png";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function MapWeb() {
   const canvasRef = useRef();
+  const [canvasSize, setCanvasSize] = useState({ width: 1440, height: 800 });
   const origWidth = 1440;
   const origHeight = 800;
 
@@ -23,6 +24,22 @@ export default function MapWeb() {
       text: point.text,
     }));
   };
+
+  const updateCanvasSize = () => {
+    const width = window.innerWidth;
+    const height = (origHeight / origWidth) * width;
+    setCanvasSize({ width, height });
+  };
+
+  useEffect(() => {
+    updateCanvasSize();
+    window.addEventListener("resize", updateCanvasSize);
+
+    return () => {
+      window.removeEventListener("resize", updateCanvasSize);
+    };
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -39,6 +56,7 @@ export default function MapWeb() {
         };
       });
     };
+
     const handleClick = (e) => {
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -53,9 +71,7 @@ export default function MapWeb() {
           y >= point.y - 10 &&
           y <= point.y + 10
         ) {
-          alert(`WEB: ${point.x}, ${point.y}`);
-
-          alert(`${point.text}`);
+          alert(`${point.text}: ${point.x}, ${point.y}`);
         }
       });
     };
@@ -65,14 +81,14 @@ export default function MapWeb() {
     return () => {
       canvas.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [canvasSize]);
 
   return (
     <canvas
       className="map map-web"
       ref={canvasRef}
-      width={1440}
-      height={800}
+      width={canvasSize.width}
+      height={canvasSize.height}
     ></canvas>
   );
 }
