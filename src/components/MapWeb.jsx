@@ -9,17 +9,18 @@ export default function MapWeb() {
   const origHeight = 800;
 
   const points = [
-    { x: 900, y: 150 },
-    { x: 910, y: 200 },
-    { x: 960, y: 230 },
-    { x: 1030, y: 270 },
-    { x: 1050, y: 330 },
+    { x: 900, y: 150, text: "Первый этап" },
+    { x: 980, y: 200, text: "Второй этап" },
+    { x: 1060, y: 230, text: "Третий этап" },
+    { x: 1000, y: 270, text: "Четвертый этап" },
+    { x: 900, y: 300, text: "Пятый этап" },
   ];
 
   const scalePoints = (canvasWidth, canvasHeight) => {
     return points.map((point) => ({
       x: (point.x / origWidth) * canvasWidth,
       y: (point.y / origHeight) * canvasHeight,
+      text: point.text,
     }));
   };
   useEffect(() => {
@@ -52,7 +53,9 @@ export default function MapWeb() {
           y >= point.y - 10 &&
           y <= point.y + 10
         ) {
-          console.log(`WEB: ${point.x}, ${point.y}`);
+          alert(`WEB: ${point.x}, ${point.y}`);
+
+          alert(`${point.text}`);
         }
       });
     };

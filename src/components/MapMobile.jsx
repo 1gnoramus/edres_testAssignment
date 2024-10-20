@@ -7,11 +7,11 @@ export default function MapMobile() {
   const canvasRef = useRef();
 
   const points = [
-    { x: 450, y: 100 },
-    { x: 550, y: 120 },
-    { x: 630, y: 150 },
-    { x: 550, y: 170 },
-    { x: 450, y: 175 },
+    { x: 450, y: 100, text: "Первый этап" },
+    { x: 550, y: 120, text: "Второй этап" },
+    { x: 630, y: 150, text: "Третий этап" },
+    { x: 550, y: 170, text: "Четвертый этап" },
+    { x: 450, y: 175, text: "Пятый этап" },
   ];
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -41,7 +41,8 @@ export default function MapMobile() {
           y >= point.y - 10 &&
           y <= point.y + 10
         ) {
-          console.log(`MOBILE: ${point.x}, ${point.y}`);
+          alert(`${point.text}`);
+          //   console.log(`MOBILE: ${point.x}, ${point.y}`);
         }
       });
     };
