@@ -5,23 +5,32 @@ import React, { useEffect, useRef } from "react";
 
 export default function MapWeb() {
   const canvasRef = useRef();
+  const origWidth = 1440;
+  const origHeight = 800;
 
   const points = [
-    { x: 450, y: 100 },
-    { x: 550, y: 120 },
-    { x: 630, y: 150 },
-    { x: 550, y: 170 },
-    { x: 450, y: 175 },
+    { x: 900, y: 150 },
+    { x: 910, y: 200 },
+    { x: 960, y: 230 },
+    { x: 1030, y: 270 },
+    { x: 1050, y: 330 },
   ];
+
+  const scalePoints = (canvasWidth, canvasHeight) => {
+    return points.map((point) => ({
+      x: (point.x / origWidth) * canvasWidth,
+      y: (point.y / origHeight) * canvasHeight,
+    }));
+  };
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const mapImgRef = new Image();
-    mapImgRef.src = mapWebImg;
-    mapImgRef.onload = () => {
-      ctx.drawImage(mapImgRef, 0, 0, canvas.width, canvas.height);
-
-      points.forEach((point) => {
+    const mapWebRef = new Image();
+    mapWebRef.src = mapWebImg;
+    mapWebRef.onload = () => {
+      ctx.drawImage(mapWebRef, 0, 0, canvas.width, canvas.height);
+      const scaledPoints = scalePoints(canvas.width, canvas.height);
+      scaledPoints.forEach((point) => {
         const pointImgRef = new Image();
         pointImgRef.src = pointImg;
         pointImgRef.onload = () => {
@@ -34,14 +43,16 @@ export default function MapWeb() {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      points.forEach((point) => {
+      const scaledPoints = scalePoints(canvas.width, canvas.height);
+
+      scaledPoints.forEach((point) => {
         if (
-          x >= point.x - 30 &&
-          x <= point.x &&
+          x >= point.x - 25 &&
+          x <= point.x + 25 &&
           y >= point.y - 10 &&
           y <= point.y + 10
         ) {
-          console.log(`LOL: ${point.x}, ${point.y}`);
+          console.log(`WEB: ${point.x}, ${point.y}`);
         }
       });
     };
@@ -54,9 +65,11 @@ export default function MapWeb() {
   }, []);
 
   return (
-    <div className="App">
-      {/* <div className="map-cont"></div> */}
-      <canvas ref={canvasRef} width={640} height={480}></canvas>
-    </div>
+    <canvas
+      className="map map-web"
+      ref={canvasRef}
+      width={1440}
+      height={800}
+    ></canvas>
   );
 }

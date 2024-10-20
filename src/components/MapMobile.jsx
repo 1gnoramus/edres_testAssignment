@@ -41,7 +41,7 @@ export default function MapMobile() {
           y >= point.y - 10 &&
           y <= point.y + 10
         ) {
-          console.log(`LOL: ${point.x}, ${point.y}`);
+          console.log(`MOBILE: ${point.x}, ${point.y}`);
         }
       });
     };
@@ -54,9 +54,11 @@ export default function MapMobile() {
   }, []);
 
   return (
-    <div className="App">
-      {/* <div className="map-cont"></div> */}
-      <canvas ref={canvasRef} width={640} height={480}></canvas>
-    </div>
+    <canvas
+      className="map map-mobile"
+      ref={canvasRef}
+      width={640}
+      height={480}
+    ></canvas>
   );
 }
